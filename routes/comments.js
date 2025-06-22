@@ -33,6 +33,7 @@ router.get("/:postId", async (req, res) => {
           path: "userId",
           select: "name email avatar",
         },
+        match: { isDeleted: false },
       })
       .sort({ createdAt: -1 })
       .skip(skip)
@@ -113,10 +114,7 @@ router.post("/:postId", auth, async (req, res) => {
       })
     }
 
-    res.status(201).json({
-      message: "Comment added successfully",
-      comment: newComment,
-    })
+    res.status(201).json(newComment)
   } catch (error) {
     console.error("Add comment error:", error)
 

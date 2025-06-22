@@ -104,6 +104,7 @@ postSchema.index({ tags: 1 })
 postSchema.index({ category: 1 })
 postSchema.index({ title: "text", content: "text" })
 
+
 // Generate slug from title
 postSchema.pre("save", function (next) {
   if (this.isModified("title") && !this.slug) {

@@ -1,3 +1,8 @@
+
+
+
+
+
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
@@ -8,12 +13,14 @@ const authRoutes = require("./routes/auth")
 const postRoutes = require("./routes/posts")
 const commentRoutes = require("./routes/comments")
 const userRoutes = require("./routes/users")
+const currentUserRoutes = require("./routes/userRoutes")
 
 // Load environment variables
 dotenv.config()
 
 const app = express()
 
+// Middleware
 // app.use(cors({
 //   origin: 'http://localhost:5173',
 //   credentials: true, // Optional: only if we're sending cookies or auth headers
@@ -22,7 +29,7 @@ const app = express()
 // Middleware
 // Allow Vercel domain
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+  origin: [process.env.CORS_ORIGIN, "http://localhost:5173"],
   credentials: true,
 }));
 app.use(express.json({ limit: "10mb" }))
@@ -32,8 +39,8 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }))
 app.use("/api/auth", authRoutes)
 app.use("/api/posts", postRoutes)
 app.use("/api/comments", commentRoutes)
-app.use("/api/users", userRoutes)
-app.use("/api/user", userRoutes) // For user-specific routes
+app.use("/api/user", currentUserRoutes) // Current user routes
+app.use("/api/users", userRoutes) // Public user routes
 
 // Health check route
 app.get("/api/health", (req, res) => {
